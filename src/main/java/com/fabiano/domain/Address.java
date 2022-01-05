@@ -7,8 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tb_address")
 public class Address implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -21,12 +25,16 @@ public class Address implements Serializable{
 	private String neighbourhood;
 	private String city;
 	private String state;
+	
+	@OneToOne
+	@JoinColumn(name = "user_id")
+    private User user;
 	 
 	public Address() {
 		
 	}
 
-	public Address(Long id, String cep, String street, String number, String neighbourhood, String city, String state) {
+	public Address(Long id, String cep, String street, String number, String neighbourhood, String city, String state, User user) {
 		super();
 		this.id = id;
 		this.cep = cep;
@@ -35,6 +43,7 @@ public class Address implements Serializable{
 		this.neighbourhood = neighbourhood;
 		this.city = city;
 		this.state = state;
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -91,6 +100,14 @@ public class Address implements Serializable{
 
 	public void setStreet(String street) {
 		this.street = street;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

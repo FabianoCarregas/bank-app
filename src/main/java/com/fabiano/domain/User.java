@@ -1,45 +1,41 @@
 package com.fabiano.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.br.CPF;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tb_user")
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 private Long id;
-
-	 @NotNull(message = "Name is mandatory")
-	 @Column(name = "full_name")
-	 private String name;
-
-	 @NotNull(message = "E-mail is mandatory")
-	 private String email;
-
-	 @CPF
-	 @NotNull(message = "CPF is mandatory")
-	 @Column(name = "cpf", length = 11)
-	 private String cpf;
-
-	 private String rg;
-		    
-	@NotNull(message = "password is mandatory")
-	@JsonIgnore
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+	private String email;
+	private String cpf;
+	private String rg;
 	private String password;
 	private Double income;
+	
+	@OneToOne(cascade =CascadeType.ALL )
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+
+ 	@OneToMany(mappedBy = "user", cascade =CascadeType.ALL)
+    private List<Loan> loans = new ArrayList<>();
 	
 	public User() {
 	}
@@ -101,6 +97,30 @@ public class User implements Serializable{
 
 	public void setIncome(Double income) {
 		this.income = income;
+	}
+	
+	public String getRg() {
+		return rg;
+	}
+
+	public void setRg(String rg) {
+		this.rg = rg;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public List<Loan> getLoans() {
+		return loans;
+	}
+
+	public void setLoans(List<Loan> loans) {
+		this.loans = loans;
 	}
 
 	@Override
