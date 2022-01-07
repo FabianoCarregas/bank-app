@@ -2,11 +2,17 @@ package com.fabiano.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +20,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fabiano.enums.UserProfile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "tb_user")
@@ -27,6 +37,8 @@ public class User implements Serializable{
 	private String email;
 	private String cpf;
 	private String rg;
+	
+	@JsonIgnore
 	private String password;
 	private Double income;
 	
@@ -36,8 +48,13 @@ public class User implements Serializable{
 
  	@OneToMany(mappedBy = "user", cascade =CascadeType.ALL)
     private List<Loan> loans = new ArrayList<>();
+ 	
+ 	@ElementCollection(fetch = FetchType.EAGER)
+ 	@CollectionTable(name = "PROFILES")
+ 	private Set<Integer> profiles = new HashSet<>();
 	
 	public User() {
+		addUserProfile(UserProfile.CLIENT);
 	}
 
 	public User(Long id, String name, String email, String cpf, String rg, String password, Double income) {
@@ -49,6 +66,7 @@ public class User implements Serializable{
 		this.rg = rg;
 		this.password = password;
 		this.income = income;
+		addUserProfile(UserProfile.CLIENT);
 	}
 
 	public Long getId() {
@@ -121,6 +139,14 @@ public class User implements Serializable{
 
 	public void setLoans(List<Loan> loans) {
 		this.loans = loans;
+	}
+	
+	public Set<UserProfile> getProfiles() {
+		return profiles.stream().map(x -> UserProfile.toEnum(x)).collect(Collectors.toSet());
+	}
+	
+	public void addUserProfile(UserProfile profile) {
+		profiles.add(profile.getCode());
 	}
 
 	@Override

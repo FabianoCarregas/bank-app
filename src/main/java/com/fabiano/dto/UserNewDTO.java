@@ -23,6 +23,8 @@ public class UserNewDTO implements Serializable{
 	@Column(name = "cpf", length = 11)
 	private String cpf;
 	private String rg;
+	
+	@NotNull(message = "Password is mandatory")
 	private String password;
 	private Double income;
 	

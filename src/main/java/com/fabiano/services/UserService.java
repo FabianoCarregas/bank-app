@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fabiano.domain.Address;
@@ -17,6 +18,9 @@ import com.fabiano.repositories.UserRepository;
 
 @Service
 public class UserService {
+	
+	@Autowired
+	private BCryptPasswordEncoder bCrypt;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -42,11 +46,11 @@ public class UserService {
 	}
 	
 	public User fromDTO(UserDTO objDto) {
-		return new User(objDto.getId(), objDto.getName(), objDto.getEmail(), objDto.getCpf(), objDto.getRg(), objDto.getPassword(), objDto.getIncome());
+		return new User(objDto.getId(), objDto.getName(), objDto.getEmail(), objDto.getCpf(), objDto.getRg(), null, objDto.getIncome());
 	}
 	
 	public User fromDTO(UserNewDTO objDto) {
-		User user = new User(null, objDto.getName(), objDto.getEmail(), objDto.getCpf(), objDto.getRg(), objDto.getPassword(), objDto.getIncome());
+		User user = new User(null, objDto.getName(), objDto.getEmail(), objDto.getCpf(), objDto.getRg(), bCrypt.encode(objDto.getPassword()), objDto.getIncome());
 		Address address = new Address(null, objDto.getCep(), objDto.getStreet(), objDto.getNumber(), objDto.getNeighbourhood(), objDto.getCity(), objDto.getState(),user);
 		user.setAddress(address);
 		return user;
