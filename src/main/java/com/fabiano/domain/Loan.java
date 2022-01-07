@@ -23,7 +23,7 @@ public class Loan implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
     @NotNull
-    private Long loanValue;
+    private Integer loanValue;
 
     @NotNull
     private String firstInstallment;
@@ -40,7 +40,7 @@ public class Loan implements Serializable {
     public Loan() {
 	}
 
-	public Loan(Long id, Long loanValue,String firstInstallment, Integer installments, User user) {
+	public Loan(Long id, Integer loanValue,String firstInstallment, Integer installments, User user) {
 		super();
 		this.id = id;
 		this.loanValue = loanValue;
@@ -73,11 +73,11 @@ public class Loan implements Serializable {
 		Installments = installments;
 	}
 
-	public Long getLoanValue() {
+	public Integer getLoanValue() {
 		return loanValue;
 	}
 
-	public void setLoanValue(Long loanValue) {
+	public void setLoanValue(Integer loanValue) {
 		this.loanValue = loanValue;
 	}
 
