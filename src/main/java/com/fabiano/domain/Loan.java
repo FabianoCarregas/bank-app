@@ -1,7 +1,7 @@
 package com.fabiano.domain;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -13,8 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
+import com.fabiano.enums.LoanStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -26,9 +27,13 @@ public class Loan implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
     private Integer loanValue;
-    private Instant date;
-    private String firstInstallment;
+    
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private Date firstInstallment;
+    @Min(value = 2, message = "Must be equal or greatter than 2 installments")
+    @Max(value = 60, message = "Most be equal or less than 60 installments")
     private Integer Installments;
+    private LoanStatus status; 
     
     @JsonIgnore
     @ManyToOne
@@ -38,12 +43,13 @@ public class Loan implements Serializable {
     public Loan() {
 	}
 
-	public Loan(Long id, Integer loanValue,String firstInstallment, Integer installments, User user) {
+	public Loan(Long id, Integer loanValue, Date firstInstallment, Integer installments, LoanStatus status, User user) {
 		super();
 		this.id = id;
 		this.loanValue = loanValue;
 		this.firstInstallment = firstInstallment;
 		this.Installments = installments;
+		this.status = status;
 		this.user = user;
 	}
 
@@ -55,11 +61,11 @@ public class Loan implements Serializable {
 		this.id = id;
 	}
 
-	public String getFirstInstallment() {
+	public Date getFirstInstallment() {
 		return firstInstallment;
 	}
 
-	public void setFirstInstallment(String firstInstallment) {
+	public void setFirstInstallment(Date firstInstallment) {
 		this.firstInstallment = firstInstallment;
 	}
 
@@ -85,6 +91,14 @@ public class Loan implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public LoanStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(LoanStatus status) {
+		this.status = status;
 	}
 
 	@Override
