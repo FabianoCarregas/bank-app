@@ -42,8 +42,7 @@ public class User implements Serializable{
 	private String password;
 	private Double income;
 	
-	@OneToOne(cascade =CascadeType.ALL )
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+	@OneToOne(mappedBy = "user", cascade =CascadeType.ALL)
     private Address address;
 
  	@OneToMany(mappedBy = "user", cascade =CascadeType.ALL)

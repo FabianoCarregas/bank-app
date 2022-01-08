@@ -1,6 +1,7 @@
 package com.fabiano.domain;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_loan")
 public class Loan implements Serializable {
@@ -22,17 +25,12 @@ public class Loan implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-    @NotNull
     private Integer loanValue;
-
-    @NotNull
+    private Instant date;
     private String firstInstallment;
-
-    @Min(value = 3, message = "Must be equal or greatter than 3 installments")
-    @Max(value = 60, message = "Most be equal or less than 60 installments")
-    @NotNull
     private Integer Installments;
     
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

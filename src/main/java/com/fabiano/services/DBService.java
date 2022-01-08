@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.fabiano.domain.Address;
 import com.fabiano.domain.Loan;
 import com.fabiano.domain.User;
+import com.fabiano.enums.UserProfile;
 import com.fabiano.repositories.AddressRepository;
 import com.fabiano.repositories.LoanRepository;
 import com.fabiano.repositories.UserRepository;
@@ -31,6 +32,8 @@ public class DBService {
 		
 		User user1 = new User(null, "João Dias", "joao@gamil.com", "22989275029", "443330330", bc.encode("123"), 2000.0);
 		User user2 = new User(null, "Maria Fernada", "maria@gmail.com", "36309674005","223334443", bc.encode("321"), 3000.0);
+		
+		user1.addUserProfile(UserProfile.ADMIN);
 		
 		userRepository.saveAll(Arrays.asList(user1,user2));
 		
