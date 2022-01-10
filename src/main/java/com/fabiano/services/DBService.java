@@ -29,7 +29,7 @@ public class DBService {
 	private BCryptPasswordEncoder bc;
 	
 	public void instantiateTestDatabase() throws ParseException {
-		
+	
 		User user1 = new User(
 				null, "João Dias", "joao@gamil.com", "22989275029", "443330330", bc.encode("123"), 8000.0);
 		User user2 = new User(
@@ -58,7 +58,7 @@ public class DBService {
 		
 		user1.getLoans().add(loan1);
 		user2.getLoans().add(loan2);
-				
+			
 	}
 
 }

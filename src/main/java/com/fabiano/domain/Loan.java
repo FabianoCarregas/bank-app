@@ -26,7 +26,6 @@ public class Loan implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty("Loan Code")
 	private Long id;
     private Integer loanValue;
     

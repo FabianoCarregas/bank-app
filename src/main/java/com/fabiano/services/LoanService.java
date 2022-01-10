@@ -2,16 +2,19 @@ package com.fabiano.services;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fabiano.domain.Loan;
+import com.fabiano.domain.User;
 import com.fabiano.dto.LoanDetailsDTO;
 import com.fabiano.enums.LoanStatus;
 import com.fabiano.enums.UserProfile;
 import com.fabiano.repositories.LoanRepository;
+import com.fabiano.repositories.UserRepository;
 import com.fabiano.security.UserSS;
 import com.fabiano.services.exceptions.AuthorizationException;
 
@@ -20,7 +23,10 @@ public class LoanService {
 	
 	@Autowired
 	private LoanRepository loanRepository;
-		
+	
+	@Autowired
+	UserRepository userRepository;
+
 	public LoanDetailsDTO findById(Long id) {
 		
 		UserSS user = UsersService.authenticated();
@@ -38,13 +44,15 @@ public class LoanService {
 		    loanDto.setEmail(obj.get().getUser().getEmail());
 			loanDto.setUserIncome(obj.get().getUser().getIncome());
 			loanDto.setStatus(obj.get().getStatus());
-
+			
 			return loanDto;
 		}
 		 return null;
-		
 	}		
 	
+	public List<Loan> findAll() {
+		return loanRepository.findAll();	
+	}
 	
 	public Loan insert(Loan obj) {
 		obj.setId(null);
@@ -57,7 +65,7 @@ public class LoanService {
 		}
 		
 		loanRepository.save(obj);
-		return obj;
+		return null;
 	}
 	
 	public Date validDate() {

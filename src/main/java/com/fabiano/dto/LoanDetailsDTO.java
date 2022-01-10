@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LoanDetailsDTO {
 
-	@JsonProperty("Loan Code")
 	private Long id;
 	
 	@JsonProperty("Loan Amount")
