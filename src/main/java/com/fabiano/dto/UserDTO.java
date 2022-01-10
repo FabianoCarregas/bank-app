@@ -15,7 +15,6 @@ public class UserDTO implements Serializable{
 	private Long id;
 
 	@NotNull(message = "Name is mandatory")
-	@Column(name = "full_name")
 	private String name;
 
 	@NotNull(message = "E-mail is mandatory")

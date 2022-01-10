@@ -17,6 +17,7 @@ import javax.validation.constraints.Min;
 import com.fabiano.enums.LoanStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "tb_loan")
@@ -25,14 +26,18 @@ public class Loan implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonProperty("Loan Code")
 	private Long id;
     private Integer loanValue;
     
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date firstInstallment;
+    
     @Min(value = 2, message = "Must be equal or greatter than 2 installments")
     @Max(value = 60, message = "Most be equal or less than 60 installments")
     private Integer Installments;
+    
+    @JsonIgnore
     private LoanStatus status; 
     
     @JsonIgnore
@@ -43,7 +48,8 @@ public class Loan implements Serializable {
     public Loan() {
 	}
 
-	public Loan(Long id, Integer loanValue, Date firstInstallment, Integer installments, LoanStatus status, User user) {
+	public Loan(Long id, Integer loanValue, Date firstInstallment,
+			Integer installments, LoanStatus status, User user) {
 		super();
 		this.id = id;
 		this.loanValue = loanValue;

@@ -13,8 +13,11 @@ import com.fabiano.domain.Address;
 import com.fabiano.domain.User;
 import com.fabiano.dto.UserDTO;
 import com.fabiano.dto.UserNewDTO;
+import com.fabiano.enums.UserProfile;
 import com.fabiano.repositories.AddressRepository;
 import com.fabiano.repositories.UserRepository;
+import com.fabiano.security.UserSS;
+import com.fabiano.services.exceptions.AuthorizationException;
 
 @Service
 public class UserService {
@@ -29,11 +32,18 @@ public class UserService {
 	AddressRepository addressRepository;
 	
 	public User findById(Long id) {
+		
+		UserSS user = UsersService.authenticated();
+		if (user==null || !user.hasRole(UserProfile.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("You do not have permission to access this content");
+		}
+		
 		Optional<User> obj = userRepository.findById(id);
-		return obj.orElseThrow(() -> new RuntimeException("User not found " + id + "Type " + User.class.getName()));
+		return obj.orElseThrow(() -> new RuntimeException(
+				"User not found " + id + "Type " + User.class.getName()));
 	}
 	
-	public List<User> findAll() {
+	public List<User> findAll() {		
 		return userRepository.findAll();
 	}
 

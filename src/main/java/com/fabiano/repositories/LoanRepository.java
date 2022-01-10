@@ -7,5 +7,5 @@ import com.fabiano.domain.Loan;
 
 @Repository
 public interface LoanRepository extends JpaRepository<Loan, Long> {
-
+	
 }
